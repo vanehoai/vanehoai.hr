@@ -142,3 +142,58 @@ const dishData = {
     category: "Nước",
   },
 };
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  const movableButton = document.getElementById("movableButton");
+
+  let isDragging = false;
+  let offsetX, offsetY;
+
+  if (movableButton) {
+    movableButton.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - movableButton.getBoundingClientRect().left;
+      offsetY = e.clientY - movableButton.getBoundingClientRect().top;
+      movableButton.style.transition = "none"; // Tắt hiệu ứng transition khi di chuyển
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+
+        movableButton.style.left = `${x}px`;
+        movableButton.style.top = `${y}px`;
+      }
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      movableButton.style.transition = "transform 0.2s ease-in-out";
+    });
+
+    // Tối ưu cho thiết bị di động
+    movableButton.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      const touch = e.touches[0];
+      offsetX = touch.clientX - movableButton.getBoundingClientRect().left;
+      offsetY = touch.clientY - movableButton.getBoundingClientRect().top;
+      movableButton.style.transition = "none";
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (isDragging) {
+        const touch = e.touches[0];
+        const x = touch.clientX - offsetX;
+        const y = touch.clientY - offsetY;
+        movableButton.style.left = `${x}px`;
+        movableButton.style.top = `${y}px`;
+      }
+    });
+
+    document.addEventListener("touchend", () => {
+      isDragging = false;
+      movableButton.style.transition = "transform 0.2s ease-in-out";
+    });
+  }
+});
